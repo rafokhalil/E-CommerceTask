@@ -1,0 +1,56 @@
+﻿@using Newtonsoft.Json
+@model E_Commerce.WebUI.Models.ProductListViewModel
+
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+
+    <table class="table">
+        <tr>
+            <td class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-left" id="ProductNameDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="user-select: none; cursor: pointer;">Product Name</a>
+                <div class="dropdown-menu" aria-labelledby="ProductNameDropdown">
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="ProductName" asp-route-type="A-z" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">A-z</a>
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="ProductName" asp-route-type="Z-a" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">Z-a</a>
+                </div>
+            </td>
+            <td class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-center" id="UnitPriceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="user-select: none; cursor: pointer;">Unit Price</a>
+                <div class="dropdown-menu" aria-labelledby="UnitPriceDropdown">
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="UnitPrice" asp-route-type="1-9" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">1-9</a>
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="UnitPrice" asp-route-type="9-1" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">9-1</a>
+                </div>
+            </td>
+            <td class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-center" id="UnitInStockDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="user-select: none; cursor: pointer;">Unit In Stock</a>
+                <div class="dropdown-menu" aria-labelledby="UnitInStockDropdown">
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="UnitInStock" asp-route-type="1-9" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">1-9</a>
+                    <a class="dropdown-item" asp-controller="Product" asp-action="ShortList" asp-route-propName="UnitInStock" asp-route-type="9-1" asp-route-jsonData="@JsonConvert.SerializeObject(Model.Products)">9-1</a>
+                </div>
+            </td>
+            <td>
+            </td>
+        </tr>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td class="text-center">@item.UnitPrice</td>
+                <td class="text-center">@item.UnitsInStock</td>
+                <td><a class="btn btn-xs btn-success" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@item.ProductId">AddToCart</a></td>
+            </tr>
+        }
+    </table>
+    @await Component.InvokeAsync("PageList")
+</div>
+
+<product-list-pager current-category="@Model.CurrentCategory"
+                    current-page="@Model.CurrentPage"
+                    page-count="@Model.PageCount"
+                    page-size="@Model.PageSize">
+
+</product-list-pager>
